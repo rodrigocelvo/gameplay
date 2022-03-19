@@ -25,8 +25,8 @@ export const styles = StyleSheet.create({
     fontSize: 15,
   },
   check: {
-    width: 12,
-    height: 12,
+    width: 10,
+    height: 10,
     backgroundColor: theme.colors.secondary100,
     alignSelf: 'flex-end',
     marginRight: 7,

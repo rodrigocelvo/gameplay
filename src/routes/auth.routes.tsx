@@ -4,8 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Home } from '../pages/Home';
 import { SignIn } from '../pages/SignIn';
 
-import { Background } from '../components/Background';
-
 const Auth = createStackNavigator();
 
 export function AuthRoutes() {

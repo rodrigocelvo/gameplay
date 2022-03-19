@@ -10,7 +10,7 @@ import { ButtonIcon } from '../../components/ButtonIcon';
 import { styles } from './styles';
 
 interface Nav {
-  navigate: (value: string) => void;
+  navigate: (nav: string) => void;
 }
 
 export function SignIn() {
@@ -36,7 +36,8 @@ export function SignIn() {
           </Text>
 
           <Text style={styles.subtitle}>
-            Crie grupos para jogar seus games{`\n`} favoritos com seus amigos
+            Crie grupos para jogar seus games{`\n`}
+            favoritos com seus amigos
           </Text>
 
           <ButtonIcon
