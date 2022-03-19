@@ -3,6 +3,8 @@ import { theme } from '../../global/styles/theme';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    minHeight: 120,
+    maxHeight: 120,
+    paddingLeft: 24,
   },
 });
