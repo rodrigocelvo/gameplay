@@ -12,10 +12,14 @@ import { ListHeader } from '../../components/ListHeader';
 import { Appointment } from '../../components/Appointment';
 import { ListDivider } from '../../components/ListDivider';
 
+interface Nav {
+  navigate: (nav: string) => void;
+}
+
 export function Home() {
   const [category, setCategory] = useState('');
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<Nav>();
 
   const appointments = [
     {
@@ -52,11 +56,15 @@ export function Home() {
     navigation.navigate('AppointmentDetails');
   }
 
+  function handleAppointmentCreate() {
+    navigation.navigate('AppointmentCreate');
+  }
+
   return (
     <Background>
       <View style={styles.header}>
         <Profile />
-        <ButtonAdd />
+        <ButtonAdd onPress={handleAppointmentCreate} />
       </View>
 
       <CategorySelect
