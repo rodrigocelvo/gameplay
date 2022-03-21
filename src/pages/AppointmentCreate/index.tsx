@@ -23,6 +23,8 @@ import { theme } from '../../global/styles/theme';
 import { styles } from './styles';
 import { GuildProps } from '../../components/Guild';
 
+import DiscordSvg from '../../assets/discord.svg';
+
 export function AppointmentCreate() {
   const [category, setCategory] = useState('');
   const [openGuildsModal, setOpenGuildsModal] = useState(false);
@@ -72,7 +74,13 @@ export function AppointmentCreate() {
           <View style={styles.form}>
             <RectButton onPress={handleOpenGuilds}>
               <View style={styles.select}>
-                {guild.icon ? <GuildIcon /> : <View style={styles.image} />}
+                {guild.icon ? (
+                  <GuildIcon guildId={guild.id} iconId={guild.icon} />
+                ) : (
+                  <View style={styles.image}>
+                    <DiscordSvg width={40} height={40} />
+                  </View>
+                )}
                 <View style={styles.selectBody}>
                   <Text style={styles.label}>
                     {guild.name ? guild.name : 'Selecione um servidor'}
