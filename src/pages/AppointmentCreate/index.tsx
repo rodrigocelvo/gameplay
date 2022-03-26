@@ -7,12 +7,11 @@ import {
   Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { COLLECTION_APPOINTMENTS } from '../../configs/database';
-
+import { useNavigation } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
 import uuid from 'react-native-uuid';
-import { Feather } from '@expo/vector-icons';
+
+import { COLLECTION_APPOINTMENTS } from '../../configs/database';
 
 import { Background } from '../../components/Background';
 import { CategorySelect } from '../../components/CategorySelect';
@@ -24,12 +23,14 @@ import { Button } from '../../components/Button';
 import { ModalView } from '../../components/ModalView';
 import { Guilds } from '../Guilds';
 
-import { theme } from '../../global/styles/theme';
-import { styles } from './styles';
 import { GuildProps } from '../../components/Guild';
 
+import { Feather } from '@expo/vector-icons';
+
+import { theme } from '../../global/styles/theme';
+import { styles } from './styles';
+
 import DiscordSvg from '../../assets/discord.svg';
-import { useNavigation } from '@react-navigation/native';
 
 export function AppointmentCreate() {
   const [category, setCategory] = useState('');

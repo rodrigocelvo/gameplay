@@ -9,6 +9,9 @@ import {
   Platform,
 } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { useRoute } from '@react-navigation/native';
+import * as Linking from 'expo-linking';
+
 import { Fontisto } from '@expo/vector-icons';
 
 import { Background } from '../../components/Background';
@@ -19,14 +22,13 @@ import { Member, MemberProps } from '../../components/Member';
 import { ListDivider } from '../../components/ListDivider';
 import { Load } from '../../components/Load';
 
+import { AppointmentsProps } from '../../components/Appointment';
+
 import { theme } from '../../global/styles/theme';
 import { styles } from './styles';
 
 import BannerImg from '../../assets/banner.png';
-import { useRoute } from '@react-navigation/native';
-import { AppointmentsProps } from '../../components/Appointment';
 import { api } from '../../services/api';
-import * as Linking from 'expo-linking';
 
 interface Params {
   guildSelected: AppointmentsProps;
@@ -37,6 +39,7 @@ interface GuildWidget {
   name: string;
   instant_invite: string;
   members: MemberProps[];
+  presence_count: string;
 }
 
 export function AppointmentDetails() {
@@ -107,8 +110,10 @@ export function AppointmentDetails() {
         <>
           <ListHeader
             title="Jogadores"
-            subtitle="Total 0"
-            // subtitle={`Total ${widget ? widget.members.length : 0}`}
+            // subtitle="Total 0"
+            subtitle={`Total ${
+              widget.presence_count ? widget.presence_count : 0
+            }`}
           />
 
           <FlatList
