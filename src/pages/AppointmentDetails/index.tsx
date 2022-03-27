@@ -111,7 +111,7 @@ export function AppointmentDetails() {
           <ListHeader
             title="Jogadores"
             // subtitle="Total 0"
-            subtitle={`Total ${
+            subtitle={`Membros online: ${
               widget.presence_count ? widget.presence_count : 0
             }`}
           />

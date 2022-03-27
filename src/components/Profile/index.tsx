@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Alert, ActivityIndicator } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { useAuth } from '../../hooks/auth';
 
 import { Avatar } from '../Avatar';
-import { Logout } from '../Logout';
+import { Button } from '../Button';
 import { ModalView } from '../ModalView';
+
+import { theme } from '../../global/styles/theme';
 import { styles } from './styles';
 
 export function Profile() {
-  const { user } = useAuth();
+  const { loading, user, signOut } = useAuth();
   const [openLogoutModal, setOpenLogoutModal] = useState(false);
 
   function handleOpenLogoutModal() {
@@ -18,6 +20,15 @@ export function Profile() {
 
   function handleCloseLogoutModal() {
     setOpenLogoutModal(false);
+  }
+
+  async function handleSignOut() {
+    try {
+      await signOut();
+      Alert.alert('Deslogado com sucesso!');
+    } catch (error) {
+      Alert.alert(`${error}`);
+    }
   }
 
   return (
@@ -39,11 +50,28 @@ export function Profile() {
       </View>
 
       <ModalView
+        animationType="fade"
         visible={openLogoutModal}
         closeModal={handleCloseLogoutModal}
         small
       >
-        <Logout />
+        <View style={styles.logout}>
+          <Text style={styles.logoutTitle}>Deseja sair do Game</Text>
+          <Text style={styles.logoutTitleSpan}>Play</Text>
+          <Text style={styles.logoutTitle}>?</Text>
+        </View>
+        <View style={styles.logoutButtonContainer}>
+          <View style={styles.logoutButton}>
+            <Button title="Não" onPress={handleCloseLogoutModal} />
+          </View>
+          <View style={styles.logoutButton}>
+            {loading ? (
+              <ActivityIndicator color={theme.colors.primary} />
+            ) : (
+              <Button title="Sim" onPress={handleSignOut} />
+            )}
+          </View>
+        </View>
       </ModalView>
     </>
   );
