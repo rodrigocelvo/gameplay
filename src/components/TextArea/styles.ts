@@ -17,4 +17,9 @@ export const styles = StyleSheet.create({
     paddingTop: 16,
     textAlignVertical: 'top',
   },
+  error: {
+    color: theme.colors.primary,
+    marginTop: 3,
+    marginBottom: 16,
+  },
 });

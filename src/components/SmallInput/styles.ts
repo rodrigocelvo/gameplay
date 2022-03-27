@@ -15,4 +15,9 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.secondary50,
   },
+  error: {
+    color: theme.colors.primary,
+    marginTop: 3,
+    marginBottom: 16,
+  },
 });

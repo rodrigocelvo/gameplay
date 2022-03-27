@@ -10,6 +10,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
 import uuid from 'react-native-uuid';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { COLLECTION_APPOINTMENTS } from '../../configs/database';
 
@@ -32,20 +35,57 @@ import { styles } from './styles';
 
 import DiscordSvg from '../../assets/discord.svg';
 
+interface Nav {
+  navigate: (nav: string) => void;
+}
+
+interface FormData {
+  name: string;
+  day: number;
+  month: number;
+  hour: number;
+  minute: number;
+  description: string;
+}
+
+const schema = yup.object({
+  day: yup
+    .number()
+    .typeError('Inisira um número válido')
+    .required('Informe uma data')
+    .max(31, 'Data inválida'),
+  month: yup
+    .number()
+    .typeError('Inisira um número válido')
+    .required('Informe um mês')
+    .max(12, 'Mês inválido'),
+  hour: yup
+    .number()
+    .typeError('Inisira um número válido')
+    .required('Informe uma hora')
+    .max(23, 'Hora inválida'),
+  minute: yup
+    .number()
+    .typeError('Inisira um número válido')
+    .required('Informe um minuto')
+    .max(59, 'Minuto inválido'),
+  description: yup
+    .string()
+    .required('Informe uma descrição')
+    .max(100, 'Descrição inválida'),
+});
+
 export function AppointmentCreate() {
   const [category, setCategory] = useState('');
   const [openGuildsModal, setOpenGuildsModal] = useState(false);
   const [guild, setGuild] = useState<GuildProps>({} as GuildProps);
-
-  const [day, setDay] = useState('');
-  const [month, setMonth] = useState('');
-  const [hour, setHour] = useState('');
-  const [minute, setMinute] = useState('');
-  const [description, setDescription] = useState('');
-
-  interface Nav {
-    navigate: (nav: string) => void;
-  }
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+  });
 
   const navigation = useNavigation<Nav>();
 
@@ -66,7 +106,13 @@ export function AppointmentCreate() {
     setCategory(categoryId);
   }
 
-  async function handleSave() {
+  async function handleSave({
+    day,
+    month,
+    hour,
+    minute,
+    description,
+  }: FormData) {
     const newAppointment = {
       id: uuid.v4(),
       guild,
@@ -144,9 +190,23 @@ export function AppointmentCreate() {
                   Dia e mês
                 </Text>
                 <View style={styles.column}>
-                  <SmallInput maxLength={2} onChangeText={setDay} />
+                  <View style={styles.errorContainer}>
+                    <SmallInput
+                      name="day"
+                      control={control}
+                      maxLength={2}
+                      error={errors.day}
+                    />
+                  </View>
                   <Text style={styles.divider}>/</Text>
-                  <SmallInput maxLength={2} onChangeText={setMonth} />
+                  <View style={styles.errorContainer}>
+                    <SmallInput
+                      name="month"
+                      control={control}
+                      maxLength={2}
+                      error={errors.month}
+                    />
+                  </View>
                 </View>
               </View>
 
@@ -155,9 +215,24 @@ export function AppointmentCreate() {
                   Horário
                 </Text>
                 <View style={styles.column}>
-                  <SmallInput maxLength={2} onChangeText={setHour} />
+                  <View style={styles.errorContainer}>
+                    <SmallInput
+                      name="hour"
+                      control={control}
+                      maxLength={2}
+                      error={errors.hour}
+                    />
+                  </View>
+
                   <Text style={styles.divider}>:</Text>
-                  <SmallInput maxLength={2} onChangeText={setMinute} />
+                  <View style={styles.errorContainer}>
+                    <SmallInput
+                      name="minute"
+                      control={control}
+                      maxLength={2}
+                      error={errors.minute}
+                    />
+                  </View>
                 </View>
               </View>
             </View>
@@ -169,21 +244,27 @@ export function AppointmentCreate() {
             </View>
 
             <TextArea
+              name="description"
+              control={control}
               multiline
               maxLength={100}
               numberOfLines={5}
               autoCorrect={false}
-              onChangeText={setDescription}
+              error={errors.description}
             />
 
             <View style={styles.footer}>
-              <Button title="Agendar" onPress={handleSave} />
+              <Button title="Agendar" onPress={handleSubmit(handleSave)} />
             </View>
           </View>
         </ScrollView>
       </Background>
 
-      <ModalView visible={openGuildsModal} closeModal={handleCloseGuilds}>
+      <ModalView
+        visible={openGuildsModal}
+        closeModal={handleCloseGuilds}
+        transparent={true}
+      >
         <Guilds handleGuildSelect={handleOpenGuildSelect} />
       </ModalView>
     </KeyboardAvoidingView>

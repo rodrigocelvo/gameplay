@@ -48,6 +48,13 @@ export const styles = StyleSheet.create({
   column: {
     flexDirection: 'row',
     alignItems: 'center',
+    textAlign: 'center',
+  },
+  errorContainer: {
+    width: 70,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   divider: {
     marginRight: 4,
